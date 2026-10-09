@@ -1,26 +1,204 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --bg: #ffffff;
+  --bg-alt: #f6f4fb;
+  --surface: #ffffff;
+  --surface-tint: #f6f4fb;
+  --border: #e8e4f3;
+  --border-strong: #d7d0ea;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --fg: #17172a;
+  --fg-muted: #57566e;
+  --fg-faint: #908fa3;
+
+  --primary: #0ea473;
+  --primary-dark: #0a7d58;
+  --primary-soft: #dcf6ea;
+  --on-primary: #ffffff;
+
+  --success: #16a34a;
+
+  --accent-violet: #7c3aed;
+  --accent-pink: #ec4899;
+  --accent-blue: #38bdf8;
+  --accent-mint: #2dd4bf;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+
   --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-lora);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-lora);
+  --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
   }
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.bg-grid {
+  background-image: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--border-strong) 70%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--border-strong) 70%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 28px 28px;
+}
+
+/* Icon chips: a muted color on a very soft tint of the same hue */
+.chip-violet {
+  background: color-mix(in srgb, var(--accent-violet) 10%, white);
+  color: var(--accent-violet);
+  border-color: color-mix(in srgb, var(--accent-violet) 22%, transparent);
+}
+.chip-pink {
+  background: color-mix(in srgb, var(--accent-pink) 10%, white);
+  color: var(--accent-pink);
+  border-color: color-mix(in srgb, var(--accent-pink) 22%, transparent);
+}
+.chip-blue {
+  background: color-mix(in srgb, var(--accent-blue) 10%, white);
+  color: var(--accent-blue);
+  border-color: color-mix(in srgb, var(--accent-blue) 22%, transparent);
+}
+.chip-mint {
+  background: color-mix(in srgb, var(--accent-mint) 10%, white);
+  color: var(--accent-mint);
+  border-color: color-mix(in srgb, var(--accent-mint) 22%, transparent);
+}
+.chip-amber {
+  background: color-mix(in srgb, var(--accent-amber) 10%, white);
+  color: var(--accent-amber);
+  border-color: color-mix(in srgb, var(--accent-amber) 22%, transparent);
+}
+.chip-rose {
+  background: color-mix(in srgb, var(--accent-rose) 10%, white);
+  color: var(--accent-rose);
+  border-color: color-mix(in srgb, var(--accent-rose) 22%, transparent);
+}
+
+/* Status pills used inside mock product UI */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.pill-green {
+  background: color-mix(in srgb, var(--success) 12%, white);
+  color: var(--success);
+}
+.pill-amber {
+  background: color-mix(in srgb, var(--accent-amber) 14%, white);
+  color: var(--accent-amber);
+}
+.pill-rose {
+  background: color-mix(in srgb, var(--accent-rose) 12%, white);
+  color: var(--accent-rose);
+}
+.pill-violet {
+  background: color-mix(in srgb, var(--accent-violet) 10%, white);
+  color: var(--accent-violet);
+}
+.pill-neutral {
+  background: var(--surface-tint);
+  color: var(--fg-muted);
+}
+
+/* Soft multi-hued pastel glow behind hero sections */
+.hero-glow {
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 680px;
+  background: radial-gradient(
+      38% 52% at 18% 22%,
+      color-mix(in srgb, var(--primary) 34%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      34% 48% at 85% 10%,
+      color-mix(in srgb, var(--accent-blue) 28%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      28% 40% at 55% 60%,
+      color-mix(in srgb, var(--accent-pink) 18%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      28% 38% at 22% 72%,
+      color-mix(in srgb, var(--accent-mint) 26%, transparent),
+      transparent 70%
+    );
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gradient-cta {
+  background: linear-gradient(
+    120deg,
+    var(--primary) 0%,
+    var(--accent-mint) 55%,
+    var(--accent-blue) 100%
+  );
 }
